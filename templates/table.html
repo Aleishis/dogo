@@ -7,12 +7,12 @@
         <meta content="El banco preferido por los mexicanos" name="description" />
         <meta content="Tu nombre" name="author" />
  
-        <link rel="shortcut icon" href="assets/images/site/favicon.png">
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/site/favicon.png')}}">
 
-        <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-        <script src="assets/js/plugin.js"></script>
+        <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <link href="{{url_for('static', filename='css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{url_for('static', filename='css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+        <script src="{{url_for('static', filename='js/plugin.js')}}"></script>
     </head>
 
     <body data-sidebar="dark" data-sidebar-size="small">
@@ -26,10 +26,10 @@
                       
                             <a href="index.html" class="logo logo-light">
                                 <span class="logo-sm">
-                                    <img src="assets/images/site/cheems_bank_logo.png" alt="" height="22">
+                                    <img src="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}" alt="" height="22">
                                 </span>
                                 <span class="logo-lg">
-                                    <img src="assets/images/site/cheems_bank_logo.png" alt="" height="70" style="margin-top:10px">
+                                    <img src="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}" alt="" height="70" style="margin-top:10px">
                                 </span>
                             </a>
                         </div>
@@ -43,7 +43,7 @@
                         <div class="dropdown d-inline-block">
                             <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="assets/images/users/default.png"
+                                <img class="rounded-circle header-profile-user" src="{{url_for('static', filename='images/users/default.png')}}"
                                     alt="Header Avatar">
                                 <span class="d-none d-xl-inline-block ms-1" key="t-henry">Luis López</span>
                                 <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
@@ -269,12 +269,12 @@
 
 
         <div class="rightbar-overlay"></div>
+        <script src="{{url_for('static', filename='libs/jquery/jquery.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/metismenu/metisMenu.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/simplebar/simplebar.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/node-waves/waves.min.js')}}"></script>
 
-        <script src="assets/libs/jquery/jquery.min.js"></script>
-        <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="assets/libs/metismenu/metisMenu.min.js"></script>
-        <script src="assets/libs/simplebar/simplebar.min.js"></script>
-        <script src="assets/libs/node-waves/waves.min.js"></script>
-        <script src="assets/js/app.js"></script>
+        <script src="{{url_for('static', filename='js/app.js')}}"></script>
     </body>
 </html>

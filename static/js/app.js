@@ -16,68 +16,67 @@
         null !== e[t].nextElementSibling &&
           e[t].nextElementSibling.classList.remove("show"));
   }
+
   function c(e) {
+    const bootstrapCss = "{{ url_for('static', filename='assets/css/bootstrap.min.css') }}";
+    const appCss = "{{ url_for('static', filename='assets/css/app.min.css') }}";
+    const bootstrapRtlCss = "{{ url_for('static', filename='assets/css/bootstrap-rtl.min.css') }}";
+    const appRtlCss = "{{ url_for('static', filename='assets/css/app-rtl.min.css') }}";
+
     1 == s("#light-mode-switch").prop("checked") && "light-mode-switch" === e
       ? (s("html").removeAttr("dir"),
         s("#dark-mode-switch").prop("checked", !1),
         s("#rtl-mode-switch").prop("checked", !1),
         s("#dark-rtl-mode-switch").prop("checked", !1),
-        "assets/css/bootstrap.min.css" != s("#bootstrap-style").attr("href") &&
-          s("#bootstrap-style").attr("href", "assets/css/bootstrap.min.css"),
+        bootstrapCss != s("#bootstrap-style").attr("href") &&
+          s("#bootstrap-style").attr("href", bootstrapCss),
         s("html").attr("data-bs-theme", "light"),
-        "assets/css/app.min.css" != s("#app-style").attr("href") &&
-          s("#app-style").attr("href", "assets/css/app.min.css"),
+        appCss != s("#app-style").attr("href") &&
+          s("#app-style").attr("href", appCss),
         sessionStorage.setItem("is_visited", "light-mode-switch"))
       : 1 == s("#dark-mode-switch").prop("checked") && "dark-mode-switch" === e
-        ? (s("html").removeAttr("dir"),
-          s("#light-mode-switch").prop("checked", !1),
-          s("#rtl-mode-switch").prop("checked", !1),
-          s("#dark-rtl-mode-switch").prop("checked", !1),
-          s("html").attr("data-bs-theme", "dark"),
-          "assets/css/bootstrap.min.css" !=
-            s("#bootstrap-style").attr("href") &&
-            s("#bootstrap-style").attr("href", "assets/css/bootstrap.min.css"),
-          "assets/css/app.min.css" != s("#app-style").attr("href") &&
-            s("#app-style").attr("href", "assets/css/app.min.css"),
-          sessionStorage.setItem("is_visited", "dark-mode-switch"))
-        : 1 == s("#rtl-mode-switch").prop("checked") && "rtl-mode-switch" === e
-          ? (s("#light-mode-switch").prop("checked", !1),
-            s("#dark-mode-switch").prop("checked", !1),
-            s("#dark-rtl-mode-switch").prop("checked", !1),
-            "assets/css/bootstrap-rtl.min.css" !=
-              s("#bootstrap-style").attr("href") &&
-              s("#bootstrap-style").attr(
-                "href",
-                "assets/css/bootstrap-rtl.min.css",
-              ),
-            "assets/css/app-rtl.min.css" != s("#app-style").attr("href") &&
-              s("#app-style").attr("href", "assets/css/app-rtl.min.css"),
-            s("html").attr("dir", "rtl"),
-            s("html").attr("data-bs-theme", "light"),
-            sessionStorage.setItem("is_visited", "rtl-mode-switch"))
-          : 1 == s("#dark-rtl-mode-switch").prop("checked") &&
-            "dark-rtl-mode-switch" === e &&
-            (s("#light-mode-switch").prop("checked", !1),
-            s("#rtl-mode-switch").prop("checked", !1),
-            s("#dark-mode-switch").prop("checked", !1),
-            "assets/css/bootstrap-rtl.min.css" !=
-              s("#bootstrap-style").attr("href") &&
-              s("#bootstrap-style").attr(
-                "href",
-                "assets/css/bootstrap-rtl.min.css",
-              ),
-            "assets/css/app-rtl.min.css" != s("#app-style").attr("href") &&
-              s("#app-style").attr("href", "assets/css/app-rtl.min.css"),
-            s("html").attr("dir", "rtl"),
-            s("html").attr("data-bs-theme", "dark"),
-            sessionStorage.setItem("is_visited", "dark-rtl-mode-switch"));
+      ? (s("html").removeAttr("dir"),
+        s("#light-mode-switch").prop("checked", !1),
+        s("#rtl-mode-switch").prop("checked", !1),
+        s("#dark-rtl-mode-switch").prop("checked", !1),
+        s("html").attr("data-bs-theme", "dark"),
+        bootstrapCss != s("#bootstrap-style").attr("href") &&
+          s("#bootstrap-style").attr("href", bootstrapCss),
+        appCss != s("#app-style").attr("href") &&
+          s("#app-style").attr("href", appCss),
+        sessionStorage.setItem("is_visited", "dark-mode-switch"))
+      : 1 == s("#rtl-mode-switch").prop("checked") && "rtl-mode-switch" === e
+      ? (s("#light-mode-switch").prop("checked", !1),
+        s("#dark-mode-switch").prop("checked", !1),
+        s("#dark-rtl-mode-switch").prop("checked", !1),
+        bootstrapRtlCss != s("#bootstrap-style").attr("href") &&
+          s("#bootstrap-style").attr("href", bootstrapRtlCss),
+        appRtlCss != s("#app-style").attr("href") &&
+          s("#app-style").attr("href", appRtlCss),
+        s("html").attr("dir", "rtl"),
+        s("html").attr("data-bs-theme", "light"),
+        sessionStorage.setItem("is_visited", "rtl-mode-switch"))
+      : 1 == s("#dark-rtl-mode-switch").prop("checked") &&
+        "dark-rtl-mode-switch" === e &&
+        (s("#light-mode-switch").prop("checked", !1),
+        s("#rtl-mode-switch").prop("checked", !1),
+        s("#dark-mode-switch").prop("checked", !1),
+        bootstrapRtlCss != s("#bootstrap-style").attr("href") &&
+          s("#bootstrap-style").attr("href", bootstrapRtlCss),
+        appRtlCss != s("#app-style").attr("href") &&
+          s("#app-style").attr("href", appRtlCss),
+        s("html").attr("dir", "rtl"),
+        s("html").attr("data-bs-theme", "dark"),
+        sessionStorage.setItem("is_visited", "dark-rtl-mode-switch"));
   }
+
   function l() {
     document.webkitIsFullScreen ||
       document.mozFullScreen ||
       document.msFullscreenElement ||
       (console.log("pressed"), s("body").removeClass("fullscreen-enable"));
   }
+
   (s("#side-menu").metisMenu(),
     s("#vertical-menu-btn").on("click", function (e) {
       (e.preventDefault(),
@@ -86,6 +85,7 @@
           ? s("body").toggleClass("vertical-collpsed")
           : s("body").removeClass("vertical-collpsed"));
     }),
+
     s("#sidebar-menu a").each(function () {
       var e = window.location.href.split(/[?#]/)[0];
       this.href == e &&
@@ -103,6 +103,7 @@
           .parent()
           .addClass("mm-active"));
     }),
+
     s(document).ready(function () {
       var e;
       0 < s("#sidebar-menu").length &&
@@ -114,6 +115,7 @@
           "slow",
         ));
     }),
+
     s(".navbar-nav a").each(function () {
       var e = window.location.href.split(/[?#]/)[0];
       this.href == e &&
@@ -132,6 +134,7 @@
           .parent()
           .addClass("active"));
     }),
+
     s('[data-bs-toggle="fullscreen"]').on("click", function (e) {
       (e.preventDefault(),
         s("body").toggleClass("fullscreen-enable"),
@@ -141,102 +144,68 @@
           ? document.cancelFullScreen
             ? document.cancelFullScreen()
             : document.mozCancelFullScreen
-              ? document.mozCancelFullScreen()
-              : document.webkitCancelFullScreen &&
-                document.webkitCancelFullScreen()
+            ? document.mozCancelFullScreen()
+            : document.webkitCancelFullScreen &&
+              document.webkitCancelFullScreen()
           : document.documentElement.requestFullscreen
-            ? document.documentElement.requestFullscreen()
-            : document.documentElement.mozRequestFullScreen
-              ? document.documentElement.mozRequestFullScreen()
-              : document.documentElement.webkitRequestFullscreen &&
-                document.documentElement.webkitRequestFullscreen(
-                  Element.ALLOW_KEYBOARD_INPUT,
-                ));
+          ? document.documentElement.requestFullscreen()
+          : document.documentElement.mozRequestFullScreen
+          ? document.documentElement.mozRequestFullScreen()
+          : document.documentElement.webkitRequestFullscreen &&
+            document.documentElement.webkitRequestFullscreen(
+              Element.ALLOW_KEYBOARD_INPUT,
+            ));
     }),
+
     document.addEventListener("fullscreenchange", l),
     document.addEventListener("webkitfullscreenchange", l),
     document.addEventListener("mozfullscreenchange", l),
-    s(".right-bar-toggle").on("click", function (e) {
+
+    s(".right-bar-toggle").on("click", function () {
       s("body").toggleClass("right-bar-enabled");
     }),
+
     s(document).on("click", "body", function (e) {
       0 < s(e.target).closest(".right-bar-toggle, .right-bar").length ||
         s("body").removeClass("right-bar-enabled");
     }),
-    (function () {
-      if (document.getElementById("topnav-menu-content")) {
-        for (
-          var e = document
-              .getElementById("topnav-menu-content")
-              .getElementsByTagName("a"),
-            t = 0,
-            s = e.length;
-          t < s;
-          t++
-        )
-          e[t].onclick = function (e) {
-            "#" === e.target.getAttribute("href") &&
-              (e.target.parentElement.classList.toggle("active"),
-              e.target.nextElementSibling.classList.toggle("show"));
-          };
-        window.addEventListener("resize", r);
-      }
-    })(),
+
     [].slice
       .call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       .map(function (e) {
         return new bootstrap.Tooltip(e);
       }),
+
     [].slice
       .call(document.querySelectorAll('[data-bs-toggle="popover"]'))
       .map(function (e) {
         return new bootstrap.Popover(e);
       }),
+
     [].slice.call(document.querySelectorAll(".offcanvas")).map(function (e) {
       return new bootstrap.Offcanvas(e);
     }),
-    window.sessionStorage &&
-      ((e = sessionStorage.getItem("is_visited"))
-        ? (s(".right-bar input:checkbox").prop("checked", !1),
-          s("#" + e).prop("checked", !0))
-        : "rtl" === s("html").attr("dir") &&
-            "dark" === s("html").attr("data-bs-theme")
-          ? (s("#dark-rtl-mode-switch").prop("checked", !0),
-            s("#light-mode-switch").prop("checked", !1),
-            sessionStorage.setItem("is_visited", "dark-rtl-mode-switch"),
-            c(e))
-          : "rtl" === s("html").attr("dir")
-            ? (s("#rtl-mode-switch").prop("checked", !0),
-              s("#light-mode-switch").prop("checked", !1),
-              sessionStorage.setItem("is_visited", "rtl-mode-switch"),
-              c(e))
-            : "dark" === s("html").attr("data-bs-theme")
-              ? (s("#dark-mode-switch").prop("checked", !0),
-                s("#light-mode-switch").prop("checked", !1),
-                sessionStorage.setItem("is_visited", "dark-mode-switch"),
-                c(e))
-              : sessionStorage.setItem("is_visited", "light-mode-switch")),
-    s(
-      "#light-mode-switch, #dark-mode-switch, #rtl-mode-switch, #dark-rtl-mode-switch",
-    ).on("change", function (e) {
-      c(e.target.id);
-    }),
+
     s("#password-addon").on("click", function () {
       0 < s(this).siblings("input").length &&
         ("password" == s(this).siblings("input").attr("type")
           ? s(this).siblings("input").attr("type", "input")
           : s(this).siblings("input").attr("type", "password"));
     }),
+
     s(window).on("load", function () {
       (s("#status").fadeOut(), s("#preloader").delay(350).fadeOut("slow"));
     }),
+
     Waves.init(),
+
     s("#checkAll").on("change", function () {
       s(".table-check .form-check-input").prop(
         "checked",
         s(this).prop("checked"),
       );
     }),
+
     s(".table-check .form-check-input").change(function () {
       s(".table-check .form-check-input:checked").length ==
       s(".table-check .form-check-input").length
