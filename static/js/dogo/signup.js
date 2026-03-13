@@ -20,7 +20,7 @@ function register(){
         password : document.getElementById('user-password').value,
     };
 
-    //endpoint
+    //endpoint api/users
     fetch('api/users', {
         method:"POST",
         headers:{"Content-Type":"application/json"},
