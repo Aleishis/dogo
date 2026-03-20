@@ -1,10 +1,11 @@
 from persistance.db import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 import pymysql
+from flask_login import UserMixin
 
-class User:
+class User(UserMixin):
     
-    def __init__(self, id:int, name:str, email:str, password:str):
+    def __init__(self, name:str, email:str, password:str):
         
         self.id = id
         self.name = name
@@ -81,6 +82,28 @@ class User:
                 return User(name=user['name'], email=user['email'], password=user['password'])
             
             return None
+                
+        except Exception as ex:
+            print(f"Error loging user:{ex}")
+            return False
+
+
+    def get_by_id(user_id):
+        try:
+            connection = get_connection()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+            query = "SELECT id, name, email, password FROM users WHERE id = %s"
+            cursor.execute(query, user_id)
+            
+            user = cursor.fetchone()
+
+
+            cursor.close()
+            connection.close()
+            
+            if user:
+                return User(user['id'],name=user['name'], email=user['email'], password=user['password'])
                 
         except Exception as ex:
             print(f"Error loging user:{ex}")

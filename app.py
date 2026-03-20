@@ -1,13 +1,25 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from entities.user import User
+from flask_login import LoginManager, login_user, login_required, logout_user
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'index'
 
 @app.route("/")
 def index():
     return render_template('index.html')
 
 @app.route('/welcome')
+@login_required
 def welcome():
     return render_template("welcome.html")
 
@@ -46,9 +58,23 @@ def login():
     user = User.check_login(email=email, password=password)
     
     if user:
+        
+        login_user(user)
+        
         return jsonify({'success' : True, 'message' : "Sesion iniciada correctamente"}), 200
     else:
         return jsonify({'success' : False, 'message' : 'Algo salio mal'}), 401
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get_by_id(user_id)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(port=5069, host='0.0.0.0')
