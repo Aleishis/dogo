@@ -5,7 +5,7 @@ from flask_login import UserMixin
 
 class User(UserMixin):
     
-    def __init__(self, name:str, email:str, password:str):
+    def __init__(self,id:int, name:str, email:str, password:str):
         
         self.id = id
         self.name = name
@@ -79,7 +79,7 @@ class User(UserMixin):
             
             if user and check_password_hash(user['password'], password):
                 
-                return User(name=user['name'], email=user['email'], password=user['password'])
+                return User(user['id'],user['name'],user['email'],"")
             
             return None
                 
@@ -103,7 +103,7 @@ class User(UserMixin):
             connection.close()
             
             if user:
-                return User(user['id'],name=user['name'], email=user['email'], password=user['password'])
+                return User(user['id'],user['name'],user['email'], user['password'])
                 
         except Exception as ex:
             print(f"Error loging user:{ex}")
