@@ -22,11 +22,11 @@ class Account():
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             
-            query = 'SELECT id, number, created_at, id_user FROM accounts WHERE user_id = %s'
+            query = 'SELECT id, number, created_at, user_id FROM accounts WHERE id = %s'
             
             cursor.execute(query, (user_id,))
             
-            rs = cursor.fetchone()
+            rs = cursor.fetchone() #result set
             
             user = User.get_by_id(rs['user_id'])
 
@@ -36,8 +36,14 @@ class Account():
                 id=rs['id'],
                 created_at=rs['created_at'],
                 user=user,
-                #pasarle los transactions
+                transactions=transactions,
+                number=rs['number']
                 )
+            
+            return account
+        except Exception as ex:
+            print("Algo salio mal al solicitar un account")
+            print(ex)
             
             
             

@@ -140,6 +140,37 @@
                         </div>
                     </div>
                 </div> 
+
+                <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in transactions %}
+                    <tr>
+                        <td>{{t.id}}</td>
+                        <td>{{t.date}}</td>
+                        <td>{{t.amount}}</td>
+                        {%if t.type == '1'%}
+                        <td class="table-success">
+                            Ingreso
+                        </td>
+                        {%else%}
+                        <td class="table-danger">
+                            Egreso
+                        </td>
+                        {% endif %}
+                        <td>{{t.description}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
                 
                 <footer class="footer">
                     <div class="container-fluid">

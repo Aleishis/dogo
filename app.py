@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from entities.user import User
+from entities.account import Account
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from dotenv import load_dotenv
 import os
-
+from flask import session
 
 load_dotenv()
 
@@ -21,8 +22,16 @@ def index():
 @app.route('/welcome')
 @login_required
 def welcome():
+    user_id = session.get('user_id')
     
-    return render_template("welcome.html")
+    if not user_id:
+        return render_template("index.html")
+    
+    transactions = Account.get_account_by_user(user_id).transactions
+    
+    
+    print(transactions)
+    return render_template("welcome.html", transactions=transactions)
 
 @app.route('/signup')
 def signup():
@@ -56,6 +65,8 @@ def login():
     if user:
         
         login_user(user) #la variable jinja current_user toma el valor del argumento, en este caso user
+        
+        session['user_id'] = user.id
         
         print("Authenticated:", current_user.is_authenticated)
         return jsonify({'success' : True, 'message' : "Sesion iniciada correctamente"}), 200
