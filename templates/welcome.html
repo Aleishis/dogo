@@ -110,12 +110,14 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">Página en blanco</h4>
+                                    <h4 class="mb-sm-0 font-size-18">
+
+                                        {%if signin_time%}
+                                        {{current_user.name}}</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Inicio</a></li>
-                                            <li class="breadcrumb-item active">Página en blanco</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -141,33 +143,44 @@
                     </div>
                 </div> 
 
-                <table class="table table-striped">
+                <div>
+                    <h1>
+                        {%set ns = namespace(total=0)%}
+                        {%for t in transactions%}
+                        {%if t.type == 1%}
+                        {%set ns.total = ns.total + t.amount%}
+                        {%else%}
+                        {%set ns.total = ns.total - t.amount%}
+                        {%endif%}
+                        {%endfor%}
+                        {{ns.total}}$
+
+                    </h1>
+                </div>
+
+                <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Date</th>
                     <th scope="col">Amount</th>
-                    <th scope="col">Type</th>
                     <th scope="col">Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for t in transactions %}
-                    <tr>
-                        <td>{{t.id}}</td>
+                        {%if t.type == 1%}
+                    <tr class="table-success">
                         <td>{{t.date}}</td>
                         <td>{{t.amount}}</td>
-                        {%if t.type == '1'%}
-                        <td class="table-success">
-                            Ingreso
-                        </td>
-                        {%else%}
-                        <td class="table-danger">
-                            Egreso
-                        </td>
-                        {% endif %}
                         <td>{{t.description}}</td>
                     </tr>
+                        {%else%}
+                    <tr class="table-danger">
+                        <td>{{t.date}}</td>
+                        <td>-{{t.amount}}</td>
+                        <td>{{t.description}}</td>
+                    </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
                 </table>

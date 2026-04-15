@@ -21,7 +21,7 @@ class Transaction():
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
             
-            query = "SELECT id, date, amount, type, description FROM transactions WHERE user_id = %s"
+            query = "SELECT id, date, amount, type, description FROM transactions WHERE user_id = %s ORDER BY date DESC"
             
             cursor.execute(query, (user_id,))
             

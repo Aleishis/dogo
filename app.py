@@ -23,6 +23,7 @@ def index():
 @login_required
 def welcome():
     user_id = session.get('user_id')
+    signin_time = session.get("signin_time")
     
     if not user_id:
         return render_template("index.html")
@@ -31,7 +32,7 @@ def welcome():
     
     
     print(transactions)
-    return render_template("welcome.html", transactions=transactions)
+    return render_template("welcome.html", transactions=transactions, signin_time=signin_time)
 
 @app.route('/signup')
 def signup():
@@ -66,6 +67,7 @@ def login():
         
         login_user(user) #la variable jinja current_user toma el valor del argumento, en este caso user
         
+        session['signin_time'] = data.get("hora_actual")
         session['user_id'] = user.id
         
         print("Authenticated:", current_user.is_authenticated)

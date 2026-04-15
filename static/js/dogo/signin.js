@@ -14,10 +14,22 @@ function login(){
         return;
     }
 
+    const fecha = new Date();
+    let hora = fecha.getHours()
+    
+    switch(hora){
+
+        case hora < 12:
+            hora = 'Buenos dias'
+    }
+
     const data = {
         email: email,
-        password: password
+        password: password,
+        hora_actual:horaActual
     }
+
+
 
     fetch('api/login', {
         method:"POST",
