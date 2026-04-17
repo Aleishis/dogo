@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from entities.user import User
+from entities.transaction import Transaction
 from entities.account import Account
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from dotenv import load_dotenv
@@ -23,16 +24,17 @@ def index():
 @login_required
 def welcome():
     user_id = session.get('user_id')
-    signin_time = session.get("signin_time")
+    mensaje_bienvenida = session.get('mensaje_bienvenida')    
     
     if not user_id:
         return render_template("index.html")
     
-    transactions = Account.get_account_by_user(user_id).transactions
+    transactions = Transaction.get_transactions_by_account(user_id)
+    balance = sum(t['amount'] if t['type'] == 1 else -t['amount'] for t in transactions)
+    account = Account.get_account_by_user(user_id)
+   
     
-    
-    print(transactions)
-    return render_template("welcome.html", transactions=transactions, signin_time=signin_time)
+    return render_template("welcome.html", transactions=transactions, mensaje_bienvenida=mensaje_bienvenida, balance=balance, account=account)
 
 @app.route('/signup')
 def signup():
@@ -61,13 +63,14 @@ def login():
     email = data.get("email")
     password = data.get("password")
     
+    
     user = User.check_login(email=email, password=password)
     
     if user:
         
         login_user(user) #la variable jinja current_user toma el valor del argumento, en este caso user
         
-        session['signin_time'] = data.get("hora_actual")
+        session['mensaje_bienvenida'] = data.get("mensaje_bienvenida")
         session['user_id'] = user.id
         
         print("Authenticated:", current_user.is_authenticated)

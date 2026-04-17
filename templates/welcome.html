@@ -102,106 +102,107 @@
                 </div>
             </div>
 
-            <div class="main-content">
+ <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
 
-                <div class="page-content">
-                    <div class="container-fluid">
+                <div class="row mb-4">
+                    <div class="col-12 d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">{{mensaje_bienvenida}}</h4>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Inicio</a></li>
+                                <li class="breadcrumb-item active">Movimientos de cuenta</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0 font-size-18">
+                <div class="row">
 
-                                        {%if signin_time%}
-                                        {{current_user.name}}</h4>
-
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Inicio</a></li>
-                                        </ol>
-                                    </div>
-                                </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0 text-primary">Bienvenido</h5>
+                                <small>Panel principal</small>
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="{{ url_for('static', filename='images/users/default.png') }}"
+                                    class="rounded-circle mb-3" width="80" height="80" alt="Usuario">
+                                <h5 class="mb-1">{{ current_user.name }}</h5>
+                                <p class="text-muted mb-0">
+                                    Cuenta {{ account.number if account else 'Sin cuenta' }}
+                                </p>
                             </div>
                         </div>
-                    </div>  
-                </div>
- 
-                <div class="modal fade transaction-detailModal" tabindex="-1" role="dialog" aria-labelledby="transaction-detailModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="transaction-detailModalLabel">Título de modal</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                        <div class="card mt-3">
+                            <div class="card-body">
+                                <h5 class="mb-3">Balance actual</h5>
+                                <h2 class="mb-1">${{ "{:,.2f}".format(balance) }}</h2>
+                                <p class="text-muted mb-0">MXN</p>
                             </div>
                         </div>
                     </div>
-                </div> 
 
-                <div>
-                    <h1>
-                        {%set ns = namespace(total=0)%}
-                        {%for t in transactions%}
-                        {%if t.type == 1%}
-                        {%set ns.total = ns.total + t.amount%}
-                        {%else%}
-                        {%set ns.total = ns.total - t.amount%}
-                        {%endif%}
-                        {%endfor%}
-                        {{ns.total}}$
+                    <div class="col-md-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="mb-4">Últimos movimientos</h5>
 
-                    </h1>
-                </div>
+                                <div class="table-responsive">
+                                    <table class="table align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Descripción</th>
+                                                <th>Monto</th>
+                                                <th>Tipo</th>
+                                            </tr>
+                                        </thead>
 
-                <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for t in transactions %}
-                        {%if t.type == 1%}
-                    <tr class="table-success">
-                        <td>{{t.date}}</td>
-                        <td>{{t.amount}}</td>
-                        <td>{{t.description}}</td>
-                    </tr>
-                        {%else%}
-                    <tr class="table-danger">
-                        <td>{{t.date}}</td>
-                        <td>-{{t.amount}}</td>
-                        <td>{{t.description}}</td>
-                    </tr>
-                        {% endif %}
-                    {% endfor %}
-                </tbody>
-                </table>
-                
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> CheemsBank - Servicios Financieros Globales
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-sm-end d-none d-sm-block">
-                                    Desarrollado por [tu nombre]
+                                        <tbody>
+                                            {% if transactions %}
+                                            {% for t in transactions %}
+                                            <tr
+                                                class="{% if t.type == 1 %}table-success{% else %}table-danger{% endif %}">
+                                                <td>{{ t.date }}</td>
+                                                <td>{{ t.description }}</td>
+                                                <td>
+                                                    {% if t.type == 1 %}
+                                                    ${{ "{:,.2f}".format(t.amount) }}
+                                                    {% else %}
+                                                    -${{ "{:,.2f}".format(t.amount) }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if t.type == 1 %}
+                                                    <span class="badge bg-success">Ingreso</span>
+                                                    {% else %}
+                                                    <span class="badge bg-danger">Egreso</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% else %}
+                                            <tr>
+                                                <td colspan="4" class="text-center text-muted">
+                                                    No hay movimientos registrados
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
                                 </div>
+
                             </div>
                         </div>
                     </div>
-                </footer>
+
+                </div>
             </div>
-
         </div>
+    </div>
 
 
         <div class="rightbar-overlay"></div>

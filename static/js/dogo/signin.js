@@ -15,18 +15,21 @@ function login(){
     }
 
     const fecha = new Date();
-    let hora = fecha.getHours()
-    
-    switch(hora){
+    let signin_time = fecha.getHours();
 
-        case hora < 12:
-            hora = 'Buenos dias'
+    
+    if (signin_time < 12){
+        mensaje_bienvenida = 'Buenos dÍas'
+    } else if (signin_time >= 12 && signin_time < 18){
+        mensaje_bienvenida = 'Buenas tardes'
+    } else{
+        mensaje_bienvenida = 'Buenas noches'
     }
 
     const data = {
         email: email,
         password: password,
-        hora_actual:horaActual
+        mensaje_bienvenida:mensaje_bienvenida
     }
 
 
