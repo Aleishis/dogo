@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from entities.user import User
 from entities.transaction import Transaction
 from entities.account import Account
+from entities.log import Log
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from dotenv import load_dotenv
 import os
@@ -66,9 +67,13 @@ def login():
     
     user = User.check_login(email=email, password=password)
     
-    if user:
+    
+    
+    if user and user.is_active:
         
         login_user(user) #la variable jinja current_user toma el valor del argumento, en este caso user
+        
+        Log.save(user.id, "New login", 1)
         
         session['mensaje_bienvenida'] = data.get("mensaje_bienvenida")
         session['user_id'] = user.id
