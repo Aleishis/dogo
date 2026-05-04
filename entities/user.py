@@ -1,3 +1,4 @@
+from entities.permissions import Permission
 from persistance.db import get_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 from enums.value_permission import ValuePermission
@@ -15,8 +16,11 @@ class User(UserMixin):
         self.password = password
         self.profile = profile
         self.permissions = permissions
-        self.is_active = is_active
+        self._is_active = is_active
          
+    @property
+    def is_active(self):
+        return self._is_active
     
     def check_email_exists(email) -> bool:
         """
@@ -76,22 +80,25 @@ class User(UserMixin):
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
 
-            query = "SELECT u.id, u.name, u.email, u.password, u.profile, u.is_active FROM users u JOIN permissions p ON u.id = p.user_id WHERE email = %s"
-            cursor.execute(query, email)
+            query = "SELECT id, name, email, password, is_active, profile FROM users WHERE email = %s" #Solo trae user
+            cursor.execute(query, (email,))
             
-            rs = cursor.fetchall()
+            try:
+                
+                user = cursor.fetchone()
             
-            permissions = [ValuePermission(row['value']) for row in rs]
+            except Exception as ex:
+                print("Error trayendo al los permisos del usuario", ex)
             
-            user = cursor.fetchone()
-
-
+            
+            permissions = Permission.get_permissions_by_user(user['id'])
+                        
             cursor.close()
             connection.close()
             
             if user and check_password_hash(user['password'], password):
                 
-                return User(user['id'],user['name'],user['email'],"", user['is_active'])
+                return User(user['id'],user['name'],user['email'],"", user['profile'], permissions, bool(user['is_active']))
             
             return None
                 
@@ -100,27 +107,30 @@ class User(UserMixin):
             return False
 
 
+
+    #Agregarle los permissions igual que en login()
     def get_by_id(user_id):
         try:
             connection = get_connection()
             cursor = connection.cursor(pymysql.cursors.DictCursor)
 
-            query = "SELECT id, name, email, password, profile, is_active FROM users WHERE id = %s"
-            cursor.execute(query, user_id)
+            query = "SELECT id, name, email, profile, is_active FROM users WHERE id = %s"
+            cursor.execute(query, (user_id,))
             
             user = cursor.fetchone()
 
-
-            cursor.close()
-            connection.close()
-            
-            if user:
+            if user:                
+                permissions = Permission.get_permissions_by_user(user['id']) 
+                
+                cursor.close()
+                connection.close()
                 return User(user['id'],
                             user['name'],
                             user['email'], 
                             '', 
                             user['profile'],
-                            user['is_active'])
+                            permissions,
+                            bool(user['is_active']))
                 
         except Exception as ex:
             print(f"Error loging user:{ex}")

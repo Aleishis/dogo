@@ -64,11 +64,11 @@ def login():
     email = data.get("email")
     password = data.get("password")
     
-    
     user = User.check_login(email=email, password=password)
     
+    print(user.is_active) #eliminar
     
-    
+        
     if user and user.is_active:
         
         login_user(user) #la variable jinja current_user toma el valor del argumento, en este caso user
@@ -80,8 +80,10 @@ def login():
         
         print("Authenticated:", current_user.is_authenticated)
         return jsonify({'success' : True, 'message' : "Sesion iniciada correctamente"}), 200
+    elif user and not user.is_active:
+        return jsonify({'success' : False, 'message' : 'Su cuenta se encuentra inactiva. Contacte al administrador.'}), 403
     else:
-        return jsonify({'success' : False, 'message' : 'Algo salio mal'}), 401
+        return jsonify({'success' : False}), 401
 
 @login_manager.user_loader
 def load_user(user_id):

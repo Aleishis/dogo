@@ -43,6 +43,8 @@ function login(){
     .then(result =>  {
         if(result.success){
                 window.location.href = "/welcome";
+        } else if (result.message) {
+            alert(result.message);
         } else {
             alert("Algo salio mal");
         }
