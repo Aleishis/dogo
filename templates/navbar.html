@@ -1,0 +1,101 @@
+<div id="layout-wrapper">
+ 
+ <header id="page-topbar">
+                <div class="navbar-header">
+                    <div class="d-flex">
+                        <div class="navbar-brand-box">
+                      
+                            <a href="{{url_for('welcome')}}" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img src="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}" alt="" height="22">
+                                </span>
+                                <span class="logo-lg">
+                                    <img src="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}" alt="" height="70" style="margin-top:10px">
+                                </span>
+                            </a>
+                        </div>
+
+                        <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+                            <i class="fa fa-fw fa-bars"></i>
+                        </button>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="dropdown d-inline-block">
+                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="rounded-circle header-profile-user" src="{{url_for('static', filename='images/users/default.png')}}"
+                                    alt="Header Avatar">
+                                <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{current_user.name}}</span>
+                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Mi perfil</span></a> 
+                                <a class="dropdown-item" href="#"><i class="bx bx-key font-size-16 align-middle me-1"></i> <span key="t-lock-screen">Cambiar mi contraseña</span></a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="{{url_for('logout')}}"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Cerrar sesión</span></a>
+                            </div>
+                        </div>
+                    </div>
+                      
+ 
+                    </div>
+                </div>
+            </header>
+
+            <div class="vertical-menu">
+                <div data-simplebar class="h-100">
+                    <div id="sidebar-menu">
+                        <ul class="metismenu list-unstyled" id="side-menu">
+                            <li class="menu-title" key="t-menu">Operaciones</li>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="bx bx-home-circle"></i>
+                                    <span key="t-dashboards">Inicio</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+
+                                    {% if 3 in session.get('permissions') %}
+                                    <li><a href="#" key="t-default">Transacciones</a></li>
+                                    {% endif %}
+                                    {% if 6 in session.get('permissions')%}
+                                    <li><a href="#" key="t-saas">Consultar póliza</a></li>
+                                    {% endif %}
+                                    {% if 7 in session.get('permissions')%}
+                                    <li><a href="#" key="t-crypto">Tarjeta de credito</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+
+                            <li class="menu-title" key="t-apps">Admin</li>
+
+                            {% if 1 in session.get('permissions') or 5 in session.get('permissions')%}
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="bx bx-calendar"></i>
+                                    <span key="t-dashboards">Registros</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    {% if 5 in session.get('permissions')%}
+                                    <li><a href="{{url_for('logs')}}" key="t-tui-calendar">Consultar logs</a></li>
+                                    {% endif %}
+
+                                    {% if 1 in session.get('permissions')%}
+                                    <li><a href="{{url_for('usuarios')}}" key="t-full-calendar">Consultar usuarios</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                            {% endif %}
+
+                            {% if 4 in session.get('permissions')%}
+                            <li>
+                                <a href="#" class="waves-effect">
+                                    <i class="bx bx-chat"></i>
+                                    <span key="t-chat">Abrir nueva cuenta</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>

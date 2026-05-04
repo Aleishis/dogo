@@ -24,3 +24,31 @@ class Permission:
         connection.close()
         return permissions
             
+    
+    def edit_permissions_by_user(user_id: int, permissions: list[int]) -> bool:
+        
+        try:
+            connection = get_connection()
+            cursor = connection.cursor()
+            
+            query = "DELETE FROM permissions WHERE user_id = %s"
+            
+            cursor.execute(query, (user_id,))
+            
+            for p in permissions:
+                cursor.execute(
+                    "INSERT INTO permissions (value, user_id) VALUES (%s, %s)",
+                    (p, user_id)
+                )
+            
+            connection.commit()
+        
+            return True
+        
+        except Exception as ex:
+            connection.rollback()
+            print("Error actualizando permisos:", ex)
+            return False
+        finally:
+            cursor.close()
+            connection.close()

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+    <head> 
+        <meta charset="utf-8" />
+        <title>CheemsBank</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="El banco preferido por los mexicanos" name="description" />
+        <meta content="Tu nombre" name="author" />
+ 
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/site/favicon.png')}}">
+
+        <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <link href="{{url_for('static', filename='css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{url_for('static', filename='css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+        <script src="{{url_for('static', filename='js/plugin.js')}}"></script>
+    </head>
+
+    <body data-sidebar="dark" data-sidebar-size="small">
+        
+        <style>
+            .modal {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.4);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .modal-content {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                width: 300px;
+                text-align: center;
+            }
+
+            .modal-actions {
+                margin-top: 15px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            button {
+                padding: 6px 12px;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+            }
+
+            button.danger {
+                background-color: #ef4444;
+                color: white;
+            }
+
+            button.danger:hover {
+                background-color: #dc2626;
+            }
+        </style>
+
+        
+        {% include 'navbar.html'%}
+
+ <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <div class="row">
+
+
+                                <div class="table-responsive">
+                                    <table class="table align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nombre</th>
+                                                <th>Activo</th>
+                                                <th>Rol</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            {% for u in users%}
+                                            <tr>
+                                                <td>{{ u.id }}</td>
+                                                <td>{{ u.name }}</td>
+                                                
+                                                <td>
+                                                    {% if u.is_active %}
+                                                        <span class="badge bg-success">Activo</span>
+                                                    {% else %}
+                                                        <span class="badge bg-danger">Inactivo</span>
+                                                    {% endif %}
+                                                </td>
+                                
+                                                <td>
+                                                    {% if u.profile == 1 %}
+                                                        <span class="badge bg-primary">Admin</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">Usuario</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <form action="{{url_for('user_edit', user_id=u.id)}}" method="get">
+                                                        <button type="submit" class="btn btn-sm btn-outline-primary">Editar</button>
+                                                    </form>
+                                                    <button class="btn btn-sm btn-outline-secondary"
+                                                        onclick="openDeleteModal('{{ u.id }}', '{{ u.name }}')">
+                                                        Eliminar
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <h3>Confirmar eliminación</h3>
+        <p id="modalText"></p>
+
+        <div class="modal-actions">
+            <button onclick="closeModal()">Cancelar</button>
+
+            <form id="deleteForm" method="POST">
+                <button type="submit" class="danger">Eliminar</button>
+            </form>
+        </div>
+    </div>
+    </div>
+
+
+        <div class="rightbar-overlay"></div>
+
+        <script src="{{url_for('static', filename='libs/jquery/jquery.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/metismenu/metisMenu.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/simplebar/simplebar.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/node-waves/waves.min.js')}}"></script>
+
+        <script src="{{url_for('static', filename='js/app.js')}}"></script>
+
+
+        <script>
+            function openDeleteModal(userId, userName) {
+                document.getElementById('deleteModal').style.display = 'flex';
+
+                document.getElementById('modalText').innerText =
+                    `¿Seguro que quieres eliminar a ${userName}?`;
+
+                document.getElementById('deleteForm').action =
+                    `/delete_user/${userId}/delete`;
+            }
+
+            function closeModal() {
+                document.getElementById('deleteModal').style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                const modal = document.getElementById('deleteModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            }
+    </script>
+    </body>
+</html>

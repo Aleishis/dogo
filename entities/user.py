@@ -91,7 +91,10 @@ class User(UserMixin):
                 print("Error trayendo al los permisos del usuario", ex)
             
             
-            permissions = Permission.get_permissions_by_user(user['id'])
+            if user['profile'] ==  1: #Toma todos los permissions si es admin
+                permissions = [p for p in ValuePermission]
+            else: #custom
+                permissions = Permission.get_permissions_by_user(user['id']) 
                         
             cursor.close()
             connection.close()
@@ -119,8 +122,12 @@ class User(UserMixin):
             
             user = cursor.fetchone()
 
-            if user:                
-                permissions = Permission.get_permissions_by_user(user['id']) 
+            if user:              
+                
+                if user['profile'] ==  1: #Toma todos los permissions si es admin
+                    permissions = [p for p in ValuePermission]
+                else: #custom
+                    permissions = Permission.get_permissions_by_user(user['id']) 
                 
                 cursor.close()
                 connection.close()
@@ -137,4 +144,39 @@ class User(UserMixin):
             return False
         
     
+    def get_all_users():
+        try:
+            connection = get_connection()
+            cursor = connection.cursor(pymysql.cursors.DictCursor)
+
+            query = "SELECT id, name, email, profile, is_active FROM users"
+            cursor.execute(query)
+            
+            users = cursor.fetchall()
+
+            cursor.close()
+            connection.close()
+            
+            return users
+                
+        except Exception as ex:
+            print(f"Error trayendo los usuarios:{ex}")
+            return False
     
+    
+    def delete_user(user_id: int):
+        
+        try:
+            connection = get_connection()
+            cursor = connection.cursor()
+            
+            query = "DELETE FROM users WHERE id = %s"
+            cursor.execute(query, (user_id,))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+            return True
+        except Exception as ex:
+            print(f"Error deleting user:{ex}")
+            return False

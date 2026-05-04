@@ -17,90 +17,8 @@
 
     <body data-sidebar="dark" data-sidebar-size="small">
 
-        <div id="layout-wrapper">
 
-            <header id="page-topbar">
-                <div class="navbar-header">
-                    <div class="d-flex">
-                        <div class="navbar-brand-box">
-                      
-                            <a href="{{url_for('index')}}" class="logo logo-light">
-                                <span class="logo-sm">
-                                    <img src="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}" alt="" height="22">
-                                </span>
-                                <span class="logo-lg">
-                                    <img src="{{url_for('static', filename='images/site/cheems_bank_logo.png')}}" alt="" height="70" style="margin-top:10px">
-                                </span>
-                            </a>
-                        </div>
-
-                        <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
-                            <i class="fa fa-fw fa-bars"></i>
-                        </button>
-                    </div>
-
-                    <div class="d-flex">
-                        <div class="dropdown d-inline-block">
-                            <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="rounded-circle header-profile-user" src="{{url_for('static', filename='images/users/default.png')}}"
-                                    alt="Header Avatar">
-                                <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{current_user.name}}</span>
-                                <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="#"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Mi perfil</span></a> 
-                                <a class="dropdown-item" href="#"><i class="bx bx-key font-size-16 align-middle me-1"></i> <span key="t-lock-screen">Cambiar mi contraseña</span></a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Cerrar sesión</span></a>
-                            </div>
-                        </div>
-                    </div>
-                      
- 
-                    </div>
-                </div>
-            </header>
-
-            <div class="vertical-menu">
-                <div data-simplebar class="h-100">
-                    <div id="sidebar-menu">
-                        <ul class="metismenu list-unstyled" id="side-menu">
-                            <li class="menu-title" key="t-menu">Categoría 1</li>
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-home-circle"></i>
-                                    <span key="t-dashboards">Inicio</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-default">Opción 1</a></li>
-                                    <li><a href="#" key="t-saas">Opción 2</a></li>
-                                    <li><a href="#" key="t-crypto">Opción 3</a></li>
-                                </ul>
-                            </li>
-
-                            <li class="menu-title" key="t-apps">Categoría 2</li>
-
-                            <li>
-                                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                    <i class="bx bx-calendar"></i>
-                                    <span key="t-dashboards">Menú 1</span>
-                                </a>
-                                <ul class="sub-menu" aria-expanded="false">
-                                    <li><a href="#" key="t-tui-calendar">Opción 1</a></li>
-                                    <li><a href="#" key="t-full-calendar">Opción 2</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#" class="waves-effect">
-                                    <i class="bx bx-chat"></i>
-                                    <span key="t-chat">Menú 2</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        {% include 'navbar.html'%}
 
  <div class="main-content">
         <div class="page-content">
@@ -162,8 +80,8 @@
                                         </thead>
 
                                         <tbody>
-                                            {% if transactions %}
-                                            {% for t in transactions %}
+                                            {% if account.transactions %}
+                                            {% for t in account.transactions %}
                                             <tr
                                                 class="{% if t.type == 1 %}table-success{% else %}table-danger{% endif %}">
                                                 <td>{{ t.date }}</td>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+    <head> 
+        <meta charset="utf-8" />
+        <title>CheemsBank</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="El banco preferido por los mexicanos" name="description" />
+        <meta content="Tu nombre" name="author" />
+ 
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/site/favicon.png')}}">
+
+        <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+        <link href="{{url_for('static', filename='css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{url_for('static', filename='css/app.min.css')}}" id="app-style" rel="stylesheet" type="text/css" />
+        <script src="{{url_for('static', filename='js/plugin.js')}}"></script>
+    </head>
+
+    <body data-sidebar="dark" data-sidebar-size="small">
+
+        {%include 'navbar.html'%}
+
+                <div class="main-content">
+                        <div class="page-content">
+                        <div class="container-fluid">
+                        <div class="row">
+                    <div class="table-responsive">
+
+                    
+                <form action="{{url_for('edit_permissions', permissions=permissions, user_id=user_id)}}" method="POST">
+
+                <table class="permissions-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Permiso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for permission in permissions %}
+                        <tr>
+                            <td>
+                                <input type="checkbox"
+                                    name="permissions"
+                                    value="{{ permission }}"
+                                    {% if permission in user_permissions %}checked{% endif %}>
+                            </td>
+
+                            <td>
+                                {{ permission }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+
+                <button type="submit">Guardar cambios</button>
+                </form>
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="rightbar-overlay"></div>
+
+        <script src="{{url_for('static', filename='libs/jquery/jquery.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/metismenu/metisMenu.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/simplebar/simplebar.min.js')}}"></script>
+        <script src="{{url_for('static', filename='libs/node-waves/waves.min.js')}}"></script>
+
+        <script src="{{url_for('static', filename='js/app.js')}}"></script>
+    </body>
+</html>
